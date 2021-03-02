@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <title>New Quotes</title>
+</head>
+
+<body>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        .author {
+            float: right;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background-color: rgb(12, 14, 12);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            /* margin: auto; */
+            margin: 10% 20% 10% 20%;
+            min-height: 300px;
+            padding: 20px;
+            justify-items: center;
+            background-color: #00a6ff;
+            flex-direction: column;
+        }
+
+        .container .inner-container {
+            /* padding: 20px; */
+            color: #000;
+            background: #fff;
+            min-height: 200px;
+        }
+
+
+
+        #newQuotes {
+            cursor: pointer;
+            color: #fff;
+            background-color: #00a6ff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .author {
+            margin-top: 90px;
+            font-size: 1.5rem;
+            text-align: right !important;
+        }
+
+        .tweetme {
+            float: right;
+            background: #fff;
+        }
+
+        .tweetme img {
+            float: right;
+            margin: 11px;
+            padding: 1px;
+            cursor: pointer;
+        }
+
+        .btn {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            margin-top: 150px;
+            padding: 0 !important;
+        }
+
+        .box {
+            padding: 20px;
+        }
+
+        .box #quotes {
+            font-size: 2rem;
+            margin-top: 10px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="inner-container" data-aos="zoom-in">
+            <p class="tweetme">
+                <img src="./img/twittrlogo.png" alt="Twitter" title="Tweet me" id="tweetme" height="20" width="30">
+            </p>
+
+            <div class="box">
+                <i class="fas fa-quote-left"></i>
+                <p id="quotes"></p>
+                <label class="author"> By: <span id="author"></span></label>
+            </div>
+
+
+            <div class="btn">
+                <p id="newQuotes">New Quotes</p>
+            </div>
+
+        </div>
+
+
+    </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+        let realData = '', quotes = document.getElementById('quotes'), author = document.getElementById('author'), newQuotes = document.getElementById('newQuotes'), quotesData = '', tweetme = document.getElementById('tweetme');
+
+        const tweetMeNow = () => {
+            const twittrUrl = `https://twitter.com/intent/tweet?text=${quotesData.text} -Author 🤒 ${quotesData.author}`;
+            window.open(twittrUrl);
+        }
+        const getNewQuotes = () => {
+            let randNo = Math.floor(Math.random() * 1643);
+            quotesData = realData[randNo];
+            quotes.innerHTML = quotesData.text;
+            author.innerHTML = (quotesData.author == null) ? "Unknown" : quotesData.author;
+        }
+        const getQuotes = async () => {
+            const api = 'https://type.fit/api/quotes';
+            let data = await fetch(api);
+            realData = await data.json();
+            getNewQuotes();
+        }
+
+        tweetme.addEventListener('click', tweetMeNow);
+        newQuotes.addEventListener('click', getNewQuotes);
+        getQuotes();
+
+    </script>
+</body>
+
+</html>
